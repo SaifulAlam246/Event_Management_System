@@ -1,19 +1,29 @@
 from django.db import models
-
-# Create your models here.
-class Event(models.Model):
-    name=models.CharField(max_length=200),
-    description=models.TextField(),
-    date=models.DateField(),
-    time=models.TimeField(),
-    location=models.CharField(max_length=300)
-    category=models.ForeignKey('Category',on_delete=models.CASCADE)
-
-class Participant(models.Model):
-    name=models.CharField(max_length=200),
-    email=models.EmailField(unique=True),
-    event=models.ManyToManyField(Event,related_name='participants')
+from django.utils import timezone
+from datetime import time,date
 
 class Category(models.Model):
-    name=models.CharField(max_length=200),
-    description=models.TextField()
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class Event(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    date = models.DateField(default=date.today)  
+    time = models.TimeField(default=timezone.now().time(), null=True, blank=True) 
+    location = models.CharField(max_length=300)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+class Participant(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField(unique=True)
+    event = models.ManyToManyField(Event, related_name='participants', blank=True)  
+
+    def __str__(self):
+        return self.name

@@ -1,0 +1,34 @@
+{% extends 'dashboard/base.html' %}
+
+
+
+{% block content %}
+
+<h1 class="text-3xl font-bold text-gray-800 mb-6">All Participants</h1>
+<form method="POST" action="{% url 'participant_create' %}" class="inline-block mb-6">
+    {% csrf_token %}
+    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Add Participant</button>
+</form>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for participant in participants %}
+            <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <h3 class="text-xl font-bold mb-2">{{ participant.name }}</h3>
+                <p class="text-gray-600 mb-3">Email: {{ participant.email }}</p>
+                <h4 class="font-semibold mb-2">Events:</h4>
+                <ol class="text-sm text-gray-500 space-y-1">
+                    {% for event in participant.events.all %}
+                        <li> {{ event.name }} ({{ event.date }})</li>
+                   {% endfor %}
+                </ol>
+                <div class="mt-4 space-x-2">
+                    <a href="{% url 'participant_update' participant.id %}" class="text-green-500 hover:underline">Edit</a>
+                    <form action="{% url 'participant_delete' participant.id %}" method="POST" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-500 hover:underline">Delete</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}  
+    </div>
+{% endblock %}
