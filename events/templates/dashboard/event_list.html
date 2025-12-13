@@ -8,7 +8,7 @@
 
 
 
-<div class="m-8 p-4 bg-white rounded-lg shadow-md">
+<div class="m-8 p-4 bg-white rounded-lg shadow-md w-1/2 sm-row">
     <h3 class="font-bold mb-4">Filters</h3>
     <form method="GET" action="{% url 'event_list' %}" class="flex flex-col sm:flex-row gap-4">
         <input type="text" name="category" value="{{ request.GET.category }}" placeholder="Search category..."  class="px-4 py-2 border rounded">
