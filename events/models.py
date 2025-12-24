@@ -1,7 +1,10 @@
 from django.db import models
 from django.utils import timezone
-from datetime import time,date
+from datetime import date
 from django.contrib.auth.models import User
+
+def current_time():
+    return timezone.now().time()
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
@@ -14,7 +17,7 @@ class Event(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     date = models.DateField(default=date.today)  
-    time = models.TimeField(default=timezone.now().time(), null=True, blank=True) 
+    time = models.TimeField(default=current_time, null=True, blank=True) 
     location = models.CharField(max_length=300)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
     event_image = models.ImageField(upload_to='events_image',  blank=True, null=True,
