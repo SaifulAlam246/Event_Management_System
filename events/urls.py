@@ -5,7 +5,7 @@ from events.views import *
 
 urlpatterns = [
     
-   path('view-dashboard/',view_dashboard,name='view_dashboard'),
+   # path('view-dashboard/',view_dashboard,name='view_dashboard'),
    path('search-events/',search_events,name='search_events'),
 
    path('all-events/',event_list,name='event_list'),
@@ -15,8 +15,8 @@ urlpatterns = [
    path('event-delete/<int:id>/',event_delete,name='event_delete'),
 
    path('participants/',participant_list,name='participant_list'),
-   path('participant-create/',participant_create,name='participant_create'),
-   path('participant-update/<int:id>/',participant_update,name='participant_update'),
+   # path('participant-create/',participant_create,name='participant_create'),
+   # path('participant-update/<int:id>/',participant_update,name='participant_update'),
    path('participant-delete/<int:id>/',participant_delete,name='participant_delete'),
 
    path('category/',category_list,name='category_list'),

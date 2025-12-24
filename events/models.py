@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from datetime import time,date
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
@@ -16,14 +17,13 @@ class Event(models.Model):
     time = models.TimeField(default=timezone.now().time(), null=True, blank=True) 
     location = models.CharField(max_length=300)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
+    event_image = models.ImageField(upload_to='events_image',  blank=True, null=True,
+                              default="events_image/defout_img.png")
+    participants=models.ManyToManyField(User,related_name='events')
+
 
     def __str__(self):
         return self.name
+    
 
-class Participant(models.Model):
-    name = models.CharField(max_length=200)
-    email = models.EmailField(unique=True)
-    event = models.ManyToManyField(Event, related_name='participants', blank=True)  
 
-    def __str__(self):
-        return self.name

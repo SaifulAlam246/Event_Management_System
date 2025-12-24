@@ -1,10 +1,11 @@
 from django import forms
 from events.models import *
+from django.contrib.auth.models import User
 
 class EventForm(forms.ModelForm):
     class Meta:
         model=Event
-        fields=['name','description','date','time','location','category']
+        fields=['name','description','date','time','location','category','event_image']
 
         widgets={
             'name':forms.TextInput(attrs={
@@ -15,21 +16,6 @@ class EventForm(forms.ModelForm):
             }),
             'date':forms.DateInput(attrs={'type':'date'}),
             'time':forms.DateInput(attrs={'type':'time'})
-        }
-
-class ParticipantForm(forms.ModelForm):
-    class Meta:
-        model=Participant
-        fields=['name','email']
-
-        widgets={
-            'name':forms.TextInput(attrs={
-                'class': 'border rounded black-500 shadow-md p-2 mt-5'
-            }),
-            'email':forms.EmailInput(attrs={
-                'type':'email',
-                'class': 'border rounded black-500 shadow-md p-2 mt-5'
-            })
         }
 
 

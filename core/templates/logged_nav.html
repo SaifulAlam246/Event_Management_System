@@ -1,0 +1,36 @@
+<nav class="bg-gradient-to-r from-purple-900 via-purple-300 to-white/10 backdrop-blur-md border-b border-white/20 p-4 text-white-100 shadow-lg sticky top-0 z-50">
+  <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-2xl font-black tracking-tighter uppercase">
+      <span class="bg-white text-purple-900 px-2 ml-1 rounded">Evently</span>
+    </h1>
+
+    <div class="flex items-center space-x-8">
+          <ul class="flex space-x-6 text-sm font-medium">
+              <li><a href="{% url 'role-dashboard' %}" class="hover:text-sky-200">Dashboard</a></li>
+
+              {% if is_organizer or is_admin %}
+                  <li><a href="{% url 'event_list' %}" class="hover:text-sky-200">Events</a></li>
+                  <li><a href="{% url 'category_list' %}" class="hover:text-sky-200">Categories</a></li>
+              {% endif %}
+
+              {% if is_participant or request.user.is_authenticated %}
+                  <li><a href="{% url 'view-rsvp-events' %}" class="hover:text-sky-200">My RSVPs</a></li>
+              {% endif %}
+              
+              {% if is_admin %}
+                  <li><a href="{% url 'participant_list' %}" class="hover:text-sky-200">Participants</a></li>
+                  <li><a href="{% url 'create-groups' %}" class="hover:text-sky-200">Create Groups</a></li>
+              {% endif %}
+            </ul>
+      <form action="{% url 'sign-out' %}" method="POST" class="inline">
+        {% csrf_token %}
+        <button
+          type="submit"
+          class="bg-red-500 px-4 py-2 rounded-lg text-sm font-semibold transition-all border border-white"
+        >
+          Logout
+        </button>
+      </form>
+    </div>
+  </div>
+</nav>

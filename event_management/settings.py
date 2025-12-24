@@ -1,9 +1,12 @@
 from pathlib import Path
+from decouple import config
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -15,7 +18,7 @@ SECRET_KEY = 'django-insecure-2bt=kw&jawm5e=)5yz$(nk0re93r2g4bt7@en2r9n4dh0vrk@(
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['http://*.onrender.com','http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com','http://127.0.0.1:8000']
 
 
 # Application definition
@@ -28,6 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'events',
+    'users',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +57,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'users.context_processors.user_roles',
             ],
         },
     },
@@ -74,7 +80,6 @@ DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
         default='postgresql://event_management_db_hf12_user:vwECmexGhtsQB9af3uyQmWxhDhAJBeCr@dpg-d4une463jp1c73e6af10-a.oregon-postgres.render.com/event_management_db_hf12',
-        
         conn_max_age=600
     )
 }
@@ -134,3 +139,14 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# For send email
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER ='saifulctgsaifulctg715@gmail.com'
+EMAIL_HOST_PASSWORD ='alfs stmm tpty uata'
+
+
+FRONTEND_URL = 'http://127.0.0.1:8000'

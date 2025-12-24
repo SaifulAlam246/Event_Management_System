@@ -1,20 +1,20 @@
-{% extends 'dashboard/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 
 
 {% block content %}
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <img src="{% static 'images/banner.jpg' %}" alt="Event" class="w-full h-64 object-cover rounded mb-6">
+    <img src="{{ event.event_image.url }}" alt="Event" class="w-full h-64 object-cover rounded mb-6">
     <h1 class="text-3xl font-bold mb-4">{{ event.name }}</h1>
     <p class="text-lg mb-6">{{ event.description }}</p>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <p><strong>Category:</strong> {{ event.category.name }}</p>
         <p><strong>Date & Time:</strong> {{ event.date }} at {{ event.time }}</p>
         <p><strong>Location:</strong> {{ event.location }}</p>
-        <p><strong>Participants:</strong> {{ event.participants.count }}</p>
+        <p><strong>Participants:</strong> {{ event.users.count }}</p>
     </div>
-    <h2 class="text-2xl font-bold mb-4">Participants:{{event.participants.count}}</h2>
+    <h2 class="text-2xl font-bold mb-4">Participants:{{event.users.count}}</h2>
     <ul class="space-y-3">
         {% for participant in participants %}
             <li class="p-4 bg-gray-50 rounded flex justify-between">

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+   <div class="m-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">RSVP Events</h1>
+
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for event in events %}
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <img src="{{ event.event_image.url }}" alt="Event" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-bold mb-2">{{ event.name }}</h3>
+                    <p class="text-gray-600 mb-3">{{ event.description}}</p>
+                    <p class="text-sm text-blue-600 mb-1">Category: {{ event.category.name }}</p>
+                    <p class="text-sm text-gray-500">{{ event.date }} at {{ event.time }} <br> {{ event.location }}</p>
+                </div>
+            {% endfor %}
+        </div>
+   </div>
+
+{% endblock %}

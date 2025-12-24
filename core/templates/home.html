@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="relative h-screen bg-cover bg-center bg-no-repeat bg-fixed"
+         style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url({% static 'images/hero.jpg' %});">
+    
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+
+    <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 text-white">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight">
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-300 to-purple-500 drop-shadow-sm">
+                Event Management
+            </span>
+            <br>
+            <span class="text-white drop-shadow-2xl">System</span>
+        </h1>
+        <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto text-gray-300 leading-relaxed font-light tracking-wide border-l-4 border-cyan-500 pl-6">
+            Seamlessly plan, organize, and manage events of any scale with our <span class="text-white font-semibold">professional platform</span>.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-6">
+            <a href="{% url 'sign-up' %}"
+            class="group relative px-8 py-4 overflow-hidden font-bold text-white transition-all duration-300 bg-transparent border-2 border-cyan-400 rounded-xl hover:border-cyan-400">
+                <span class="absolute inset-0 w-full h-full transition-all duration-300 transform -translate-x-full bg-cyan-400 group-hover:translate-x-0 ease"></span>
+                
+                <span class="relative flex items-center gap-2 group-hover:text-black transition-colors duration-300">
+                    Get Started
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 group-hover:translate-x-1 transition-transform">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </span>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock content %}
