@@ -5,7 +5,7 @@ from users.views import dashboard
 
 
 urlpatterns = [
+    path('',home,name='home'),
     path('dashboard/',dashboard,name='role-dashboard'),
-    path('home/',home,name='home'),
     path('no-permission/',no_permission,name='no-permission')
 ]
