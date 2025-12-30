@@ -1,16 +1,23 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
-from users.forms import LoginForm,RegisterForm
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Prefetch,Count
-from users.forms import AssignRoleForm,CreateGroupForm
+from users.forms import AssignRoleForm,CreateGroupForm,CustomUserRegisterForm,LoginForm,ProfileUpdateForm
 from events.models import Event
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.core.mail import send_mail
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import UpdateView
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordChangeView
+
+User = get_user_model()
+
 # Create your views here.
 
 def is_admin(user):
@@ -104,9 +111,9 @@ def participant_dashboard(request):
     return render(request,'participant/participant_dashboard.html',context)
 
 def sign_up(request):
-    form = RegisterForm()
+    form = CustomUserRegisterForm()
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = CustomUserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data.get('password1'))
@@ -196,3 +203,26 @@ def dashboard(request):
         return redirect('organizer-dashboard')
     else:
         return redirect('participant-dashboard')
+    
+
+         
+            # profile funtinalities. 
+
+@login_required                 
+def view_profile(request):
+    return render(request,'accounts/profile.html')                
+
+
+class ProfileUpdate(LoginRequiredMixin,UpdateView):
+    model=User
+    form_class=ProfileUpdateForm
+    template_name='accounts/edit_profile.html'
+    success_url=reverse_lazy('profile')
+
+    def get_object(self):
+        return self.request.user
+    
+class ChangePassword(PasswordChangeView):
+    template_name='accounts/change_password.html'
+    success_url=reverse_lazy('profile')    
+        

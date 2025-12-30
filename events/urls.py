@@ -1,18 +1,17 @@
 from django.contrib import admin
 from django.urls import path
-from events.views import *
-
+from events.views import EventList,SearchEvents,EventDetail,EventCreate,EventUpdate,EventDelete, participant_list,participant_delete,category_list,category_create,category_update,category_delete
 
 urlpatterns = [
     
    # path('view-dashboard/',view_dashboard,name='view_dashboard'),
-   path('search-events/',search_events,name='search_events'),
+   path('search-events/',SearchEvents.as_view(),name='search_events'),
 
-   path('all-events/',event_list,name='event_list'),
-   path('events-detail/<int:id>/',event_detail,name='event_detail'),
-   path('event-create/',event_create,name='event_create'),
-   path('event-update/<int:id>/',event_update,name='event_update'),
-   path('event-delete/<int:id>/',event_delete,name='event_delete'),
+   path('all-events/',EventList.as_view(),name='event_list'),
+   path('events-detail/<int:id>/',EventDetail.as_view(),name='event_detail'),
+   path('event-create/',EventCreate.as_view(),name='event_create'),
+   path('event-update/<int:id>/',EventUpdate.as_view(),name='event_update'),
+   path('event-delete/<int:id>/',EventDelete.as_view(),name='event_delete'),
 
    path('participants/',participant_list,name='participant_list'),
    # path('participant-create/',participant_create,name='participant_create'),

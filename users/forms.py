@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User,Group,Permission
-from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth.forms import UserCreationForm,UserChangeForm
+from users.models import CustomUser
 class StyledFormMixin:
     """ Mixing to apply style to form field"""
 
@@ -47,10 +47,25 @@ class LoginForm(StyledFormMixin, AuthenticationForm):
 
         
 
-class RegisterForm(UserCreationForm):
+class CustomUserRegisterForm(StyledFormMixin,UserCreationForm):
     class Meta:
-        model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        model = CustomUser
+        fields = ['username', 'email', 'first_name', 'last_name', 'phone_number', 'profile_picture']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)  
+
+        for field in self.fields.values():
+            field.help_text = None
+
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+            })
+class ProfileUpdateForm(StyledFormMixin,forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'first_name', 'last_name', 'phone_number', 'profile_picture']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)  

@@ -1,6 +1,6 @@
 from django import forms
 from events.models import *
-from django.contrib.auth.models import User
+
 
 class EventForm(forms.ModelForm):
     class Meta:

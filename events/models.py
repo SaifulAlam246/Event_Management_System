@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from datetime import date
-from django.contrib.auth.models import User
+from django.conf import settings
+
 
 def current_time():
     return timezone.now().time()
@@ -22,7 +23,7 @@ class Event(models.Model):
     category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
     event_image = models.ImageField(upload_to='events_image',  blank=True, null=True,
                               default="events_image/defout_img.png")
-    participants=models.ManyToManyField(User,related_name='events')
+    participants=models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='events')
 
 
     def __str__(self):
