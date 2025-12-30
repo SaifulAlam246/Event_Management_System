@@ -1,36 +1,92 @@
-<nav class="bg-gradient-to-r from-purple-900 via-purple-300 to-white/10 backdrop-blur-md border-b border-white/20 p-4 text-white-100 shadow-lg sticky top-0 z-50">
+<nav class="bg-gradient-to-r from-purple-900 via-purple-300 to-white/10 backdrop-blur-md border-b border-white/20 p-4 text-white shadow-lg sticky top-0 z-50">
   <div class="container mx-auto flex justify-between items-center">
     <h1 class="text-2xl font-black tracking-tighter uppercase">
       <span class="bg-white text-purple-900 px-2 ml-1 rounded">Evently</span>
     </h1>
 
-    <div class="flex items-center space-x-8">
-          <ul class="flex space-x-6 text-sm font-medium">
-              <li><a href="{% url 'role-dashboard' %}" class="hover:text-sky-200">Dashboard</a></li>
+    <div class="hidden md:flex items-center space-x-8">
+      <ul class="flex space-x-6 text-sm font-medium text-black">
+        <li><a href="{% url 'role-dashboard' %}" class="hover:opacity-75">Dashboard</a></li>
+        {% if is_organizer or is_admin %}
+          <li><a href="{% url 'event_list' %}" class="hover:opacity-75">Events</a></li>
+          <li><a href="{% url 'category_list' %}" class="hover:opacity-75">Categories</a></li>
+        {% endif %}
+        {% if is_participant or request.user.is_authenticated %}
+          <li><a href="{% url 'view-rsvp-events' %}" class="hover:opacity-75">My RSVPs</a></li>
+        {% endif %}
+        {% if is_admin %}
+          <li><a href="{% url 'participant_list' %}" class="hover:opacity-75">Participants</a></li>
+          <li><a href="{% url 'group-list' %}" class="hover:opacity-75">Groups</a></li>
+          <li><a href="{% url 'create-group' %}" class="hover:opacity-75">Create Group</a></li>
+        {% endif %}
+      </ul>
 
-              {% if is_organizer or is_admin %}
-                  <li><a href="{% url 'event_list' %}" class="hover:text-sky-200">Events</a></li>
-                  <li><a href="{% url 'category_list' %}" class="hover:text-sky-200">Categories</a></li>
-              {% endif %}
+      <div class="relative group">
+        <button id="profileDropdownBtn" class="flex items-center space-x-2 bg-purple-700 px-3 py-2 rounded-lg hover:bg-purple-500 transition">
+          <div class="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center border border-white">
+            {{ request.user.username|slice:":1"|upper }}
+          </div>
 
-              {% if is_participant or request.user.is_authenticated %}
-                  <li><a href="{% url 'view-rsvp-events' %}" class="hover:text-sky-200">My RSVPs</a></li>
-              {% endif %}
-              
-              {% if is_admin %}
-                  <li><a href="{% url 'participant_list' %}" class="hover:text-sky-200">Participants</a></li>
-                  <li><a href="{% url 'create-groups' %}" class="hover:text-sky-200">Create Groups</a></li>
-              {% endif %}
-            </ul>
-      <form action="{% url 'sign-out' %}" method="POST" class="inline">
-        {% csrf_token %}
-        <button
-          type="submit"
-          class="bg-red-500 px-4 py-2 rounded-lg text-sm font-semibold transition-all border border-white"
-        >
-          Logout
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
         </button>
-      </form>
+
+        <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-purple-100 rounded-xl shadow-xl py-2 text-gray-800 z-50 border border-gray-100">
+          <a href="{% url 'profile' %}" class="block px-4 py-2 hover:bg-purple-50 transition">View Profile</a>
+          <hr class="my-1 border-gray-100">
+          <form action="{% url 'sign-out' %}" method="POST" class="block w-full">
+            {% csrf_token %}
+            <button type="submit" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition font-medium">Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="md:hidden flex items-center">
+      <button id="mobileMenuBtn" class="text-white focus:outline-none">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
     </div>
   </div>
+
+  <div id="mobileMenu" class="hidden md:hidden mt-4 space-y-4 pb-4 border-t border-white/10">
+    <ul class="flex flex-col space-y-3 pt-4 text-sm font-medium">
+      <li><a href="{% url 'role-dashboard' %}" class="block px-2">Dashboard</a></li>
+      {% if is_organizer or is_admin %}
+        <li><a href="{% url 'event_list' %}" class="block px-2">Events</a></li>
+      {% endif %}
+      <li><a href="{% url 'profile' %}" class="block px-2">Profile</a></li>
+      <li class="pt-2">
+        <form action="{% url 'sign-out' %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="w-full bg-red-500 text-center py-2 rounded-lg">Logout</button>
+        </form>
+      </li>
+    </ul>
+  </div>
 </nav>
+
+<script>
+  
+  const profileBtn = document.getElementById('profileDropdownBtn');
+  const profileDropdown = document.getElementById('profileDropdown');
+  
+  profileBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileDropdown.classList.toggle('hidden');
+  });
+
+  
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  mobileMenuBtn?.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  
+  window.onclick = function(event) {
+    if (!event.target.closest('#profileDropdownBtn')) {
+      profileDropdown?.classList.add('hidden');
+    }
+  }
+</script>
